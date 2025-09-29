@@ -171,7 +171,7 @@ Este proyecto fue desarrollado como una aplicación de gestión académica con f
 
 ## Video
 
-[text](https://youtu.be/2_JILV7QAMk)
+[Click aquí](https://youtu.be/2_JILV7QAMk)
 
 ---
 
