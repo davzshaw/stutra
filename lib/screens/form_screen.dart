@@ -203,15 +203,42 @@ class _FormScreenState extends State<FormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Formularios')),
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: const Text(
+          'Formularios',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Procesando...',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+            )
           : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   _buildStudentForm(),
+                  const SizedBox(height: 24),
                   _buildCourseForm(),
+                  const SizedBox(height: 24),
                   _buildEnrollmentForm(),
+                  const SizedBox(height: 80),
                 ],
               ),
             ),
@@ -219,81 +246,344 @@ class _FormScreenState extends State<FormScreen> {
   }
 
   Widget _buildStudentForm() {
-    return Column(
-      children: [
-        const Text('Crear Estudiante'),
-        TextField(controller: _studentIdController, decoration: const InputDecoration(labelText: 'ID')),
-        TextField(controller: _studentNameController, decoration: const InputDecoration(labelText: 'Nombre')),
-        TextField(controller: _studentLastnameController, decoration: const InputDecoration(labelText: 'Apellido')),
-        TextField(controller: _studentBirthdayController, decoration: const InputDecoration(labelText: 'Fecha de Nacimiento')),
-        Row(
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.white, Colors.blue[50]!],
+          ),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(onPressed: _saveStudent, child: const Text('Guardar')),
-            ElevatedButton(onPressed: _clearStudentForm, child: const Text('Limpiar')),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.person_add_rounded, color: Colors.blue, size: 24),
+                ),
+                const SizedBox(width: 16),
+                const Text(
+                  'Crear Estudiante',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _studentIdController,
+              decoration: InputDecoration(
+                labelText: 'ID del Estudiante',
+                prefixIcon: const Icon(Icons.badge_outlined),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _studentNameController,
+              decoration: InputDecoration(
+                labelText: 'Nombre',
+                prefixIcon: const Icon(Icons.person_outline),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _studentLastnameController,
+              decoration: InputDecoration(
+                labelText: 'Apellido',
+                prefixIcon: const Icon(Icons.person_outline),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _studentBirthdayController,
+              decoration: InputDecoration(
+                labelText: 'Fecha de Nacimiento',
+                hintText: 'YYYY-MM-DD',
+                prefixIcon: const Icon(Icons.cake_outlined),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _saveStudent,
+                    icon: const Icon(Icons.save_rounded),
+                    label: const Text('Guardar'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _clearStudentForm,
+                    icon: const Icon(Icons.clear_rounded),
+                    label: const Text('Limpiar'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 
   Widget _buildCourseForm() {
-    return Column(
-      children: [
-        const Text('Crear Curso'),
-        TextField(controller: _courseNameController, decoration: const InputDecoration(labelText: 'Nombre')),
-        TextField(controller: _courseCreditsController, decoration: const InputDecoration(labelText: 'Créditos'), keyboardType: TextInputType.number),
-        Row(
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.white, Colors.green[50]!],
+          ),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(onPressed: _saveCourse, child: const Text('Guardar')),
-            ElevatedButton(onPressed: _clearCourseForm, child: const Text('Limpiar')),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.school_rounded, color: Colors.green, size: 24),
+                ),
+                const SizedBox(width: 16),
+                const Text(
+                  'Crear Curso',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _courseNameController,
+              decoration: InputDecoration(
+                labelText: 'Nombre del Curso',
+                prefixIcon: const Icon(Icons.book_outlined),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _courseCreditsController,
+              decoration: InputDecoration(
+                labelText: 'Créditos',
+                prefixIcon: const Icon(Icons.star_outline),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _saveCourse,
+                    icon: const Icon(Icons.save_rounded),
+                    label: const Text('Guardar'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _clearCourseForm,
+                    icon: const Icon(Icons.clear_rounded),
+                    label: const Text('Limpiar'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 
   Widget _buildEnrollmentForm() {
-    return Column(
-      children: [
-        const Text('Crear Matrícula'),
-        DropdownButton<String>(
-          value: selectedStudentId,
-          hint: const Text('Seleccionar Estudiante'),
-          items: students.map((student) {
-            return DropdownMenuItem<String>(
-              value: student.id,
-              child: Text('${student.name} ${student.lastname} (${student.id})'),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              selectedStudentId = value;
-            });
-          },
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.white, Colors.orange[50]!],
+          ),
         ),
-        DropdownButton<int>(
-          value: selectedCourseId,
-          hint: const Text('Seleccionar Curso'),
-          items: courses.map((course) {
-            return DropdownMenuItem<int>(
-              value: course.id,
-              child: Text('${course.name} (${course.credits})'),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              selectedCourseId = value;
-            });
-          },
-        ),
-        TextField(controller: _markController, decoration: const InputDecoration(labelText: 'Nota'), keyboardType: TextInputType.number),
-        Row(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(onPressed: _saveEnrollment, child: const Text('Guardar')),
-            ElevatedButton(onPressed: _clearEnrollmentForm, child: const Text('Limpiar')),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.orange[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.assignment_rounded, color: Colors.orange, size: 24),
+                ),
+                const SizedBox(width: 16),
+                const Text(
+                  'Crear Matrícula',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[300]!),
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: DropdownButton<String>(
+                value: selectedStudentId,
+                hint: const Text('Seleccionar Estudiante'),
+                isExpanded: true,
+                underline: const SizedBox(),
+                items: students.map((student) {
+                  return DropdownMenuItem<String>(
+                    value: student.id,
+                    child: Text('${student.name} ${student.lastname} (${student.id})'),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedStudentId = value;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[300]!),
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: DropdownButton<int>(
+                value: selectedCourseId,
+                hint: const Text('Seleccionar Curso'),
+                isExpanded: true,
+                underline: const SizedBox(),
+                items: courses.map((course) {
+                  return DropdownMenuItem<int>(
+                    value: course.id,
+                    child: Text('${course.name} (${course.credits} créditos)'),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCourseId = value;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _markController,
+              decoration: InputDecoration(
+                labelText: 'Nota (Opcional)',
+                prefixIcon: const Icon(Icons.grade_outlined),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _saveEnrollment,
+                    icon: const Icon(Icons.save_rounded),
+                    label: const Text('Guardar'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _clearEnrollmentForm,
+                    icon: const Icon(Icons.clear_rounded),
+                    label: const Text('Limpiar'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 

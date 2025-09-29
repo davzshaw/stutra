@@ -68,42 +68,179 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Editar Estudiante')),
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: const Text(
+          'Editar Estudiante',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Form(
-              key: _formKey,
+          ? Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Nombre'),
-                    validator: (v) => v == null || v.trim().isEmpty ? 'Requerido' : null,
+                  CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                  TextFormField(
-                    controller: _lastnameController,
-                    decoration: const InputDecoration(labelText: 'Apellido'),
-                    validator: (v) => v == null || v.trim().isEmpty ? 'Requerido' : null,
-                  ),
-                  TextFormField(
-                    controller: _birthdayController,
-                    decoration: const InputDecoration(labelText: 'Fecha de Nacimiento'),
-                    validator: (v) {
-                      if (v == null || v.trim().isEmpty) return 'Requerido';
-                      final regex = RegExp(r'^\d{4}-\d{2}-\d{2}$');
-                      if (!regex.hasMatch(v)) return 'Formato inválido (YYYY-MM-DD)';
-                      return null;
-                    },
-                  ),
-                  ElevatedButton(
-                    onPressed: isLoading ? null : _saveStudent,
-                    child: const Text('Guardar'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancelar'),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Guardando cambios...',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
+              ),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.white,
+                              Colors.grey[50]!,
+                            ],
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Icon(
+                                    Icons.edit_rounded,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    size: 24,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                const Text(
+                                  'Información del Estudiante',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+                            TextFormField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                labelText: 'Nombre',
+                                prefixIcon: const Icon(Icons.person_outline),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey[50],
+                              ),
+                              validator: (v) => v == null || v.trim().isEmpty ? 'Requerido' : null,
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _lastnameController,
+                              decoration: InputDecoration(
+                                labelText: 'Apellido',
+                                prefixIcon: const Icon(Icons.person_outline),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey[50],
+                              ),
+                              validator: (v) => v == null || v.trim().isEmpty ? 'Requerido' : null,
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _birthdayController,
+                              decoration: InputDecoration(
+                                labelText: 'Fecha de Nacimiento',
+                                hintText: 'YYYY-MM-DD',
+                                prefixIcon: const Icon(Icons.cake_outlined),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey[50],
+                              ),
+                              validator: (v) {
+                                if (v == null || v.trim().isEmpty) return 'Requerido';
+                                final regex = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+                                if (!regex.hasMatch(v)) return 'Formato inválido (YYYY-MM-DD)';
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: isLoading ? null : _saveStudent,
+                            icon: const Icon(Icons.save_rounded),
+                            label: const Text(
+                              'Guardar',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[600],
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 3,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: const Icon(Icons.cancel_outlined),
+                            label: const Text(
+                              'Cancelar',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              side: BorderSide(color: Colors.grey[400]!),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
     );
